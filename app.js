@@ -1,3 +1,4 @@
+require('dotenv').config();
 var express     = require("express"),
     app         = express(),
     bodyParser  = require("body-parser"),
@@ -12,6 +13,7 @@ var express     = require("express"),
     session = require("express-session"),
     seedDB      = require("./seeds"),
     methodOverride = require("method-override");
+var connectDB =require("./DB/connection");
 // configure dotenv
 require('dotenv').load();
 
@@ -22,8 +24,11 @@ var commentRoutes    = require("./routes/comments"),
     
 
 //Database connecting
-var uri ="mongodb+srv://deep:deep@123@cluster0-31nvz.mongodb.net/test?retryWrites=true&w=majority";
-mongoose.connect(uri,{useUnifiedTopology: true,useNewUrlParser:true});
+var URI ="mongodb+srv://deep:deepak@cluster0-31nvz.mongodb.net/test?retryWrites=true&w=majority ";
+mongoose
+     .connect(URI, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true })
+     .then(() => console.log( 'Database Connected' ))
+     .catch(err => console.log( err ));
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
